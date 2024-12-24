@@ -1,9 +1,6 @@
 const mongoose = require("mongoose")
 const busSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
+
 
     busnumber: {
         type: Number,
