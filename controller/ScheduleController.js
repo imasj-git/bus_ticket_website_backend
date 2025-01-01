@@ -1,8 +1,8 @@
-const Shedule = require('../model/shedule')
+const Schedule = require('../model/schedule')
 const findAll = async (req, res) => {
     try {
         const shedules = await Shedule.find().populate(["customerId", "itemId",]);
-        res.status(200).json(shedules);
+        res.status(200).json(schedules);
     } catch (e) {
         res.json(e)
     }
@@ -15,15 +15,15 @@ const findAll = async (req, res) => {
 const save = async (req, res) => {
     try {
         const { name, description, busnumber, busname, type, totalseat } = req.body
-        const shedule = new Shedule({
+        const schedule = new Schedule({
             arrivaltime,
             departuretime,
             availableseat,
 
 
         });
-        await shedule.save();
-        res.status(201).json(shedule)
+        await schedule.save();
+        res.status(201).json(schedule)
     } catch (e) {
         res.json(e)
     }
@@ -31,8 +31,8 @@ const save = async (req, res) => {
 }
 const findById = async (req, res) => {
     try {
-        const shedule = await Shedule.findById(req.params.id);
-        res.status(200).json(shedule)
+        const schedule = await Schedule.findById(req.params.id);
+        res.status(200).json(schedule)
     } catch (e) {
         res.json(e)
 
@@ -42,7 +42,7 @@ const findById = async (req, res) => {
 }
 const deleteById = async (req, res) => {
     try {
-        const shedule = await Shedule.findByIdAndDelete(req.params.id);
+        const schedule = await Schedule.findByIdAndDelete(req.params.id);
         res.status(200).json("data Deleted")
     } catch (e) {
         res.json(e)
@@ -53,8 +53,8 @@ const deleteById = async (req, res) => {
 }
 const update = async (req, res) => {
     try {
-        const shedule = await Shedule.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(201).json(shedule)
+        const schedule = await Schedule.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(201).json(schedule)
     } catch (e) {
         res.json(e)
 

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const sheduleSchema = new mongoose.Schema({
+const scheduleSchema = new mongoose.Schema({
     routeId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "routes"
@@ -24,6 +24,6 @@ const sheduleSchema = new mongoose.Schema({
 
 
 })
-const Shedule = mongoose.model("Shedules", orderSchema);
+const Schedule = mongoose.model("Schedules", orderSchema);
 
-module.exports = Shedule;
+module.exports = Schedule;
