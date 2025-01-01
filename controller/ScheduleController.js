@@ -1,8 +1,8 @@
 const Schedule = require('../model/schedule')
 const findAll = async (req, res) => {
     try {
-        const shedules = await Shedule.find().populate(["customerId", "itemId",]);
-        res.status(200).json(schedules);
+        const schedules = await Schedule.find().populate(["customerId", "itemId",]);
+        res.status(200).json(sedules);
     } catch (e) {
         res.json(e)
     }
@@ -14,7 +14,7 @@ const findAll = async (req, res) => {
 }
 const save = async (req, res) => {
     try {
-        const { name, description, busnumber, busname, type, totalseat } = req.body
+        const { arrivaltime, departuretime, availableseat } = req.body
         const schedule = new Schedule({
             arrivaltime,
             departuretime,
