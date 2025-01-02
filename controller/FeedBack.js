@@ -1,8 +1,8 @@
-const Ticket = require('../model/Ticket')
+const Feedback = require('../model/Feedback');
 const findAll = async (req, res) => {
     try {
-        const tickets = await Ticket.find().populate(["customerId", "itemId",]);
-        res.status(200).json(tickets);
+        const feedbacks = await Feedback.find().populate(["customerId", "itemId",]);
+        res.status(200).json(feedbacks);
     } catch (e) {
         res.json(e)
     }
@@ -14,17 +14,18 @@ const findAll = async (req, res) => {
 }
 const save = async (req, res) => {
     try {
-        const { seatnumber, bookingstatus, price, issuedat } = req.body
-        const ticket = new Ticket({
-            seatnumber,
-            bookingstatus,
-            price,
-            issuedat,
+        const { userId, busId, rating, comment, submittedat } = req.body
+        const feedback = new Feedback({
+            userId,
+            busId,
+            rating,
+            comment,
+            submittedat,
 
 
         });
-        await ticket.save();
-        res.status(201).json(ticket)
+        await feedback.save();
+        res.status(201).json(feedback)
     } catch (e) {
         res.json(e)
     }
@@ -32,8 +33,8 @@ const save = async (req, res) => {
 }
 const findById = async (req, res) => {
     try {
-        const ticket = await Ticket.findById(req.params.id);
-        res.status(200).json(ticket)
+        const feedback = await feedback.findById(req.params.id);
+        res.status(200).json(feedback)
     } catch (e) {
         res.json(e)
 
@@ -43,7 +44,7 @@ const findById = async (req, res) => {
 }
 const deleteById = async (req, res) => {
     try {
-        const ticket = await Ticket.findByIdAndDelete(req.params.id);
+        const feedback = await Feedback.findByIdAndDelete(req.params.id);
         res.status(200).json("data Deleted")
     } catch (e) {
         res.json(e)
@@ -54,7 +55,7 @@ const deleteById = async (req, res) => {
 }
 const update = async (req, res) => {
     try {
-        const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const feedback = await Feedback.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(201).json(ticket)
     } catch (e) {
         res.json(e)
