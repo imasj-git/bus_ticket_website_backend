@@ -24,6 +24,6 @@ const scheduleSchema = new mongoose.Schema({
 
 
 })
-const Schedule = mongoose.model("schedules", orderSchema);
+const Schedule = mongoose.model("schedules", scheduleSchema);
 
 module.exports = Schedule;

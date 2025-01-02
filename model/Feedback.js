@@ -1,34 +1,31 @@
 const { string } = require("joi");
 const mongoose = require("mongoose")
-const ticktSchema = new mongoose.Schema({
-    scheduleId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "schedules"
-    },
-    customerId: {
+const feedbackSchema = new mongoose.Schema({
+    busId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "buses"
     },
+    customerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "customers"
+    },
 
-    seatnumber: {
+    rating: {
         type: Integer,
         required: true
     },
-    bookingstatus: {
+    comment: {
         type: String,
         required: true
     },
-    price: {
+    submittedat: {
         type: Integer,
-        required: true
-    },
-    issuedat: {
-        type: Date,
         required: true
     }
 
 
-})
-const Ticket = mongoose.model("tickets", ticktSchema);
 
-module.exports = Ticket;
+})
+const Feedback = mongoose.model("feedbaks", feedbackSchema);
+
+module.exports = Feedback;

@@ -1,4 +1,4 @@
-const Schedule = require('../model/schedule')
+const Schedule = require('../model/Schedule')
 const findAll = async (req, res) => {
     try {
         const schedules = await Schedule.find().populate(["customerId", "itemId",]);
