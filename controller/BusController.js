@@ -2,7 +2,7 @@
 const Bus = require('../model/Bus')
 const findAll = async (req, res) => {
     try {
-        const buses = await Bus.find().populate('routeid');
+        const buses = await Bus.find();
         res.status(200).json(buses);
     } catch (e) {
         res.json(e)
@@ -11,15 +11,15 @@ const findAll = async (req, res) => {
 }
 const save = async (req, res) => {
     try {
-        const { name, description, busnumber, busname, type, totalseat } = req.body
+        const { operatorName, busnumber, busname, type, totalseat } = req.body
         const bus = new Bus({
-            name,
-            description,
+
+            operatorName,
             busnumber,
             busname,
             type,
             totalseat,
-            image: req.file.originalname
+
         });
         await bus.save();
         res.status(201).json(bus)

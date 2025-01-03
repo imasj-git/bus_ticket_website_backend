@@ -10,11 +10,11 @@ const scheduleSchema = new mongoose.Schema({
     },
 
     departureTime: {
-        type: Time,
+        type: Date,
         required: true
     },
     arrivalTime: {
-        type: Time,
+        type: Date,
         required: true
     },
     availableSeats: {

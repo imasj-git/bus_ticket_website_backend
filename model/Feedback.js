@@ -11,21 +11,22 @@ const feedbackSchema = new mongoose.Schema({
     },
 
     rating: {
-        type: Integer,
+        type: Number,
         required: true
+
     },
     comment: {
         type: String,
         required: true
     },
-    submittedat: {
-        type: Integer,
+    submittedAt: {
+        type: Date,
         required: true
     }
 
 
 
 })
-const Feedback = mongoose.model("feedbaks", feedbackSchema);
+const Feedback = mongoose.model("feedbacks", feedbackSchema);
 
 module.exports = Feedback;

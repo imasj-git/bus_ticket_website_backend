@@ -30,6 +30,6 @@ const bookingSchema = new mongoose.Schema({
     }
 
 })
-const Books = mongoose.model("Books", orderSchema);
+const Books = mongoose.model("Books", bookingSchema);
 
 module.exports = Books;

@@ -11,7 +11,7 @@ const ticktSchema = new mongoose.Schema({
     },
 
     seatnumber: {
-        type: Integer,
+        type: Number,
         required: true
     },
     bookingstatus: {
@@ -19,7 +19,7 @@ const ticktSchema = new mongoose.Schema({
         required: true
     },
     price: {
-        type: Integer,
+        type: Number,
         required: true
     },
     issuedat: {

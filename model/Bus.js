@@ -18,10 +18,11 @@ const busSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    routeid: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "routes",
-    }
+    operatorName: {
+        type: String,
+        required: true
+    },
+
 
 })
 const Bus = mongoose.model("buses", busSchema);

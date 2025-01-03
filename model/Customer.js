@@ -11,7 +11,12 @@ const customerSchema = new mongoose.Schema({
     contact_no: {
         type: String,
         required: true
+    },
+    password: {
+        type: String,
+        required: true
     }
+
 
 })
 const Customer = mongoose.model("customers", customerSchema);
