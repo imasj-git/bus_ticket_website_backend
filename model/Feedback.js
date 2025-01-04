@@ -21,7 +21,7 @@ const feedbackSchema = new mongoose.Schema({
     },
     submittedAt: {
         type: Date,
-        required: true
+        default: Date.now
     }
 
 

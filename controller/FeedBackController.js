@@ -1,7 +1,7 @@
 const Feedback = require('../model/Feedback');
 const findAll = async (req, res) => {
     try {
-        const feedbacks = await Feedback.find().populate(["customerId", "itemId",]);
+        const feedbacks = await Feedback.find().populate(["customerId", "busId",]);
         res.status(200).json(feedbacks);
     } catch (e) {
         res.json(e)
@@ -33,7 +33,7 @@ const save = async (req, res) => {
 }
 const findById = async (req, res) => {
     try {
-        const feedback = await feedback.findById(req.params.id);
+        const feedback = await Feedback.findById(req.params.id);
         res.status(200).json(feedback)
     } catch (e) {
         res.json(e)
@@ -56,7 +56,7 @@ const deleteById = async (req, res) => {
 const update = async (req, res) => {
     try {
         const feedback = await Feedback.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(201).json(ticket)
+        res.status(201).json(feedback)
     } catch (e) {
         res.json(e)
 

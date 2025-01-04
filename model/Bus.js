@@ -1,9 +1,10 @@
+const { string } = require("joi");
 const mongoose = require("mongoose")
 const busSchema = new mongoose.Schema({
 
 
     busnumber: {
-        type: Number,
+        type: String,
         required: true
     },
     busname: {

@@ -1,7 +1,7 @@
 const Ticket = require('../model/Ticket')
 const findAll = async (req, res) => {
     try {
-        const tickets = await Ticket.find().populate(["customerId", "itemId",]);
+        const tickets = await Ticket.find().populate(["customerId", "scheduleId",]);
         res.status(200).json(tickets);
     } catch (e) {
         res.json(e)
@@ -14,12 +14,14 @@ const findAll = async (req, res) => {
 }
 const save = async (req, res) => {
     try {
-        const { seatnumber, bookingstatus, price, issuedat } = req.body
+        const { seatnumber, bookingstatus, price, issuedat, scheduleId, customerId } = req.body
         const ticket = new Ticket({
             seatnumber,
             bookingstatus,
             price,
             issuedat,
+            scheduleId,
+            customerId
 
 
         });

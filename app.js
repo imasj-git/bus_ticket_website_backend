@@ -8,7 +8,7 @@ const AuthRouter = require("./routes/AuthRoute")
 const FeedbackRouter = require("./routes/FeedbackRoute")
 const PaymentRouter = require("./routes/PaymentRoute")
 const RouteRouter = require("./routes/RouteRoute")
-const SheduleRouter = require("./routes/SheduleRoute")
+const ScheduleRouter = require("./routes/ScheduleRoute")
 const TicketRouter = require("./routes/TicketRoute")
 
 const app = express();
@@ -23,7 +23,7 @@ app.use("/api/auth", AuthRouter)
 app.use("/api/feedback", FeedbackRouter)
 app.use("/api/payment", PaymentRouter)
 app.use("/api/route", RouteRouter)
-app.use("/api/shedule", SheduleRouter)
+app.use("/api/schedule", ScheduleRouter)
 app.use("/api/ticket", TicketRouter)
 
 

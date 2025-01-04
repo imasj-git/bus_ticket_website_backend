@@ -14,7 +14,7 @@ const paymentSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    maymentmethod: {
+    paymentmethod: {
         type: String,
         required: true
     },
@@ -24,7 +24,7 @@ const paymentSchema = new mongoose.Schema({
     },
     paidAt: {
         type: Date,
-        required: true
+        default: Date.now
     }
 
 

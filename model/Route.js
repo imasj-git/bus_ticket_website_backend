@@ -9,11 +9,11 @@ const routeSchema = new mongoose.Schema({
         required: true
     },
     duration: {
-        type: Number,
+        type: String,
         required: true
     },
     distance: {
-        type: Number,
+        type: String,
         required: true
     }
 

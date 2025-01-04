@@ -1,7 +1,7 @@
 const Payment = require('../model/Payment')
 const findAll = async (req, res) => {
     try {
-        const payments = await Payment.find().populate(["customerId", "itemId",]);
+        const payments = await Payment.find().populate(["customerId", "bookingId",]);
         res.status(200).json(payments);
     } catch (e) {
         res.json(e)
