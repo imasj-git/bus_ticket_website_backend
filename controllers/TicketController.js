@@ -1,4 +1,4 @@
-const Ticket = require('../model/Ticket')
+const Ticket = require('../models/Ticket')
 const findAll = async (req, res) => {
     try {
         const tickets = await Ticket.find().populate(["customerId", "scheduleId",]);
