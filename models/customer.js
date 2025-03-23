@@ -1,8 +1,8 @@
-const { required } = require("joi");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+
 const customerSchema = new mongoose.Schema({
     fname: {
         type: String,
@@ -13,7 +13,6 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-
     },
     phone: {
         type: String,
@@ -24,20 +23,27 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true, // Ensure unique emails
     },
     password: {
         type: String,
         required: true,
         trim: true,
     },
+    role: {
+        type: String,
+        enum: ["customer", "admin"],
+        default: "customer", // Default role is "customer"
+    },
     image: {
         type: String,
         default: null,
     },
-
-
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
 });
-// Encrypt password using bcrypt
+
+// Encrypt password before saving
 customerSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         next();
@@ -46,33 +52,26 @@ customerSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Sign JWT and return
+// Sign JWT and return (Include Role)
 customerSchema.methods.getSignedJwtToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
-        //expiresIn: 5,
     });
 };
 
-// Match user entered password to hashed password in database
+// Match entered password with hashed password
 customerSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Generate and hash password token
+// Generate Reset Password Token
 customerSchema.methods.getResetPasswordToken = function () {
-    // Generate token
     const resetToken = crypto.randomBytes(20).toString("hex");
 
-    // Hash token and set to resetPasswordToken field
-    this.resetPasswordToken = crypto
-        .createHash("sha256")
-        .update(resetToken)
-        .digest("hex");
-
-    // Set expire
+    this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     return resetToken;
 };
+
 module.exports = mongoose.model("Customer", customerSchema);

@@ -1,40 +1,3 @@
-// const express = require("express")
-// const connectDb = require("./config/db")
-// const CustomerRouter = require("./routes/CustomerRoute")
-// const BusRouter = require("./routes/BusRoute")
-
-// const BookingRouter = require("./routes/BookingRoute")
-// const AuthRouter = require("./routes/AuthRoute")
-// const FeedbackRouter = require("./routes/FeedbackRoute")
-// const PaymentRouter = require("./routes/PaymentRoute")
-// const RouteRouter = require("./routes/RouteRoute")
-// const ScheduleRouter = require("./routes/ScheduleRoute")
-// const TicketRouter = require("./routes/TicketRoute")
-
-// const app = express();
-// connectDb();
-
-// app.use(express.json());
-// app.use("/api/customer", CustomerRouter);
-// app.use("/api/bus", BusRouter);
-// app.use("/api/booking", BookingRouter)
-// app.use("/api/auth", AuthRouter)
-
-// app.use("/api/feedback", FeedbackRouter)
-// app.use("/api/payment", PaymentRouter)
-// app.use("/api/route", RouteRouter)
-// app.use("/api/schedule", ScheduleRouter)
-// app.use("/api/ticket", TicketRouter)
-
-
-
-
-
-// const port = 3000;
-// app.listen(port, () => {
-//     console.log(`Server running at http://localhost:${port}`)
-
-// })
 const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
@@ -42,67 +5,83 @@ const morgan = require("morgan");
 const colors = require("colors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
-const mongoSanitize = require("express-mongo-sanitize"); // for sql injection
+const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const app = express();
 
-app.use(cors());
-app.options("*", cors());
-
-// Load env file
+// ✅ Load env file
 dotenv.config({
   path: "./config/config.env",
 });
 
-// Connect to database
+// ✅ Connect to database
 connectDB();
 
-// Route files
-const auth = require("./routes/customer");
+// ✅ Enable CORS (Fix OPTIONS 204 No Content issue)
+app.use(cors({
+  origin: "*", 
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type, Authorization"
+}));
 
-// Body parser
 app.use(express.json());
 app.use(cookieParser());
-
-app.use(bodyParser.json({}));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Dev logging middleware
+// ✅ Dev logging middleware (Only in development mode)
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Sanitize data
+// ✅ Security Middleware
 app.use(mongoSanitize());
+app.use(helmet()); // Prevent security vulnerabilities
+app.use(xss()); // Prevent cross-site scripting (XSS) attacks
 
-// Set security headers
-app.use(helmet());
-
-// Prevent XSS attacks
-app.use(xss());
-
-// Set static folder
-app.use(express.static(path.join(__dirname, "public")));
-// app.use(express.static('public'));
-
-// Mount routers
-app.use("/api/v1/auth", auth);
-
-const PORT = process.env.PORT || 5000;
-
-const server = app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
-  )
-);
-
-// Handle unhandled promise rejections
-process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`.red);
-  // Close server & exit process
-  server.close(() => process.exit(1));
+// ✅ Fix "Cross-Origin Resource Policy" Issue
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
 });
+
+// ✅ Set static folder
+app.use(express.static(path.join(__dirname, "public")));
+
+// ✅ Import Routes
+const authRoutes = require("./routes/customer");
+const routeRoutes = require("./routes/route");
+const busRoutes = require("./routes/BusRoute");
+const khaltiRoutes = require("./routes/khaltiRoutes");
+const bookingRoutes = require("./routes/BookingRoute"); // ✅ Fix import (Ensure file exists)
+
+// ✅ Mount Routes
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/route", routeRoutes);
+app.use("/api/v1/bus", busRoutes);
+app.use("/api/khalti", khaltiRoutes);
+app.use("/api/v1/bookings", bookingRoutes); // ✅ Ensure this is correct
+
+// ✅ Export `app` for testing
+module.exports = app;
+
+// ✅ Start server only if not in test mode
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(
+    PORT,
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold)
+  );
+
+  // ✅ Handle unhandled promise rejections
+  process.on("unhandledRejection", (err, promise) => {
+    console.log(`Error: ${err.message}`.red);
+    server.close(() => process.exit(1));
+  });
+}
